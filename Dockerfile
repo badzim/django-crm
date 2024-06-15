@@ -30,8 +30,12 @@ RUN apt-get purge -y \
 # Copier tout le contenu du projet dans le répertoire de travail
 COPY . /app/
 
+# Copier wait-for-it.sh dans le répertoire de travail
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
+
 # Exposer le port 8000 pour l'application Django
 EXPOSE 8000
 
 # Définir la commande par défaut pour exécuter le serveur Django
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["./wait-for-it.sh", "db:3306", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
