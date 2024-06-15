@@ -34,8 +34,11 @@ COPY . /app/
 COPY wait-for-it.sh /app/wait-for-it.sh
 RUN chmod +x /app/wait-for-it.sh
 
+# Copier le script d'initialisation de la base de données
+COPY mydb.py /app/mydb.py
+
 # Exposer le port 8000 pour l'application Django
 EXPOSE 8000
 
 # Définir la commande par défaut pour exécuter le serveur Django
-CMD ["./wait-for-it.sh", "db:3306", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["./wait-for-it.sh", "db:3306", "--", "bash", "-c", "python init_db.py && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

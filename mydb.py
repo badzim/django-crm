@@ -8,17 +8,31 @@
 
 
 import mysql.connector
+import time
+
+# Attendre que le serveur MySQL soit prêt
+time.sleep(10)
 
 dataBase = mysql.connector.connect(
-    user = 'root',
-    passwd = 'root',
-    host = 'localhost',
-    auth_plugin='mysql_native_password')
+    user='root',
+    passwd='root',
+    host='db',
+    auth_plugin='mysql_native_password'
+)
 
-# prepare a cursor object
+# Préparer un objet curseur
 cursorObject = dataBase.cursor()
 
-# create a database
-cursorObject.execute("CREATE DATABASE elderco")
+# Vérifier si la base de données existe
+cursorObject.execute("SHOW DATABASES LIKE 'elderco'")
+database_exists = cursorObject.fetchone()
 
-print("DB Init Done !")
+# Créer la base de données si elle n'existe pas
+if not database_exists:
+    cursorObject.execute("CREATE DATABASE elderco")
+    print("DB Init Done !")
+else:
+    print("Database already exists")
+
+cursorObject.close()
+dataBase.close()
