@@ -1,13 +1,9 @@
-version: '3.8'
-
 services:
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     restart: always
     environment:
-      MYSQL_DATABASE: nom_de_ta_base_de_donnees
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: elderco
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - db_data:/var/lib/mysql
@@ -15,10 +11,13 @@ services:
       - mynetwork
 
   web:
-    build: ..
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    command: ["./wait-for-it.sh", "db:3306", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
-      - .:/app
+      - ..:/app
+      - ./wait-for-it.sh:/wait-for-it.sh
     ports:
       - "8000:8000"
     depends_on:

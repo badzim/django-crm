@@ -1,0 +1,56 @@
+# Python bytecode files
+*.pyc
+__pycache__/
+
+# Virtual environment directory
+venv/
+env/
+
+# Django migrations
+**/migrations/
+
+# SQLite database file
+*.sqlite3
+
+# Local settings file
+settings_local.py
+
+# Media files
+media/
+
+# Static files
+staticfiles/
+static/
+
+# VSCode configuration files
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# macOS specific files
+.DS_Store
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# pytest cache directory
+.pytest_cache/
+
+# MyPy cache directory
+.mypy_cache/
+
+# PyCharm project files
+.idea/
+
+# Node modules (if you have any front-end code)
+node_modules/
+
+# Environment variables file
+.env
+
+# Docker files
+docker-compose.override.yml
+
