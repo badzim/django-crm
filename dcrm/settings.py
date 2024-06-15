@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-y#_t)y=ugvm-&h#qb@l#5lg&-&!b23!-z(=-by(2f2c#0d+eyh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["165.22.80.74"]
+ALLOWED_HOSTS = ["django.crm.ikeoservices.tech"]
 
 
 # Application definition
