@@ -81,7 +81,7 @@ DATABASES = {
         'NAME' : 'elderco',
         'USER' : 'root',
         'PASSWORD' : 'root',
-        'HOST' : 'localhost',
+        'HOST' : 'db',
         'POST' : '3306',
     }
 }
