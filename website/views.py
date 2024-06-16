@@ -7,7 +7,12 @@ from .models import Record
 # Create your views here.
 def home(request):
     # Check to see if logging in
-    record = Record.objects.all()
+    if request.user.is_authenticated:
+        # Filtrer les enregistrements par utilisateur connecté
+        record = Record.objects.filter(created_by=request.user)
+    else:
+        record = Record.objects.none()
+
     
     if request.method == 'POST':
         username1 = request.POST['username1']
@@ -54,7 +59,12 @@ def customer_record(request, pk):
     if request.user.is_authenticated:
         # Look Up Records
         customer_record = Record.objects.get(id=pk)
-        return render(request, 'record.html', {'customer_record':customer_record})
+        if (customer_record.created_by == request.user):
+            return render(request, 'record.html', {'customer_record':customer_record})
+        else:
+            messages.success(request, "You Are Not Allowed To View This Record")
+            return redirect('home')   
+            
     else:
         messages.success(request, "You Need To Be Authenticated To View This Record")
         return redirect('home')        
@@ -62,8 +72,12 @@ def customer_record(request, pk):
 def delete_record(request, pk):
     if request.user.is_authenticated:
         delete_it = Record.objects.get(id=pk)
-        delete_it.delete()
-        messages.success(request, "Record Deleted Successfully !")
+        if (delete_it.created_by == request.user):
+            delete_it.delete()
+            messages.success(request, "Record Deleted Successfully !")
+        else:
+            messages.success(request, "You Are Not Allowed To Delete This Record")
+            return redirect('home')   
     else:
         messages.success(request, "You Need To Be Logged In To Do This Action !")
     return redirect('home')
@@ -72,14 +86,18 @@ def delete_record(request, pk):
 def update_record(request, pk):
     if request.user.is_authenticated:
         current_record = Record.objects.get(id=pk)
-        form = CreateRecordForm(request.POST or None, instance=current_record)
-        if (request.method == 'POST'):
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Record Updated Successfully !")
-                return redirect('home')
+        if (current_record.created_by == request.user):
+            form = CreateRecordForm(request.POST or None, instance=current_record)
+            if (request.method == 'POST'):
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Record Updated Successfully !")
+                    return redirect('home')
+            else:
+                return render(request, 'update_record.html', {'form':form})
         else:
-            return render(request, 'update_record.html', {'form':form})
+            messages.success(request, "You Are Not Allowed To Update This Record")
+            return redirect('home')   
     else:
         messages.success(request, "You Need To Be Logged In To Do This Action !")
     return redirect('home')
@@ -90,7 +108,9 @@ def add_record(request):
         if request.method == 'POST':
             form = CreateRecordForm(request.POST)
             if form.is_valid():
-                form.save()
+                record = form.save()
+                record.created_by = request.user
+                record.save()
                 messages.success(request, "Record Added Successfully !")
                 return redirect('home')
             else:

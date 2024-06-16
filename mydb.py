@@ -16,7 +16,7 @@ time.sleep(10)
 dataBase = mysql.connector.connect(
     user='root',
     passwd='root',
-    host='db',
+    host='localhost',
 )
 
 # Préparer un objet curseur
