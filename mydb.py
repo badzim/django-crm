@@ -17,7 +17,6 @@ dataBase = mysql.connector.connect(
     user='root',
     passwd='root',
     host='db',
-    auth_plugin='mysql_native_password'
 )
 
 # Préparer un objet curseur

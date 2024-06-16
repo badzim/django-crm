@@ -14,13 +14,15 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    command: ["./wait-for-it.sh", "db:3306", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["./wait-for-it.sh", "db:3306", "--", "/app/init.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
       - ..:/app
     ports:
       - "8000:8000"
     depends_on:
       - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=dcrm.settings
     networks:
       - mynetwork
 
