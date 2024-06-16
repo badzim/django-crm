@@ -49,4 +49,4 @@ EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=dcrm.settings
 
 # Définir la commande par défaut pour exécuter le script d'initialisation puis démarrer le serveur Django
-CMD ["./wait-for-it.sh", "db:3306", "--", "/app/init.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["/app/wait-for-it.sh", "db:3306", "--", "/app/init.sh", "python", "manage.py", "runserver", "0.0.0.0:8000"]
