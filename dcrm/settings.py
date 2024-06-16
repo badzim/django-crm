@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["django.crm.ikeoservices.tech", "localhost", "127.0.0.1"]
 
+CSRF_TRUSTED_ORIGINS = ['https://django.crm.ikeoservices.tech']
 
 # Application definition
 
